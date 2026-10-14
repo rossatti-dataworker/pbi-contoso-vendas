@@ -1,3 +1,4 @@
+
 # 📊 Dashboard Executivo de Vendas - Contoso (Power BI + SQL Server + Docker)
 
 ![Power BI](https://img.shields.io/badge/Power_BI-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
@@ -16,6 +17,10 @@ A solução abrange desde a **subida de infraestrutura em container Docker (SQL 
 ---
 
 ## 🏗️ Arquitetura da Solução
+
+
+```
+
 +-----------------------------------------------------------------------+
 |                         LINUX UBUNTU (HOST)                           |
 |                                                                       |
@@ -26,7 +31,7 @@ A solução abrange desde a **subida de infraestrutura em container Docker (SQL 
 |  |   - Port: 1433                  |                                  |
 |  +---------------------------------+                                  |
 |                  ^                                                    |
-|                  | (Conexão via Rede NAT / Port 1433)                  |
+|                  | (Conexão via Rede NAT / Port 1433)                 |
 |                  v                                                    |
 |  +-----------------------------------------------------------------+  |
 |  |                     MÁQUINA VIRTUAL WINDOWS 11                  |  |
@@ -38,6 +43,8 @@ A solução abrange desde a **subida de infraestrutura em container Docker (SQL 
 |  |   +---------------------------------------------------------+   |  |
 |  +-----------------------------------------------------------------+  |
 +-----------------------------------------------------------------------+
+
+```
 
 ---
 
@@ -58,4 +65,74 @@ ContosoVendasDB
 ├── DimProduto (ID_Produto, NomeProduto, Categoria, PrecoUnitario, CustoUnitario)
 └── DimLoja (ID_Loja, NomeLoja, Cidade, Estado)
 
+```
 
+---
+
+## 📐 Métricas & Regras de Negócio (DAX)
+
+Para suportar as análises executivas, foram desenvolvidas medidas utilizando **DAX (Data Analysis Expressions)**:
+
+* **Faturamento Total:**
+```dax
+Faturamento Total = SUM(FactVendas[ValorTotal])
+
+```
+
+
+* **Custo Total:**
+```dax
+Custo Total = 
+SUMX(
+    FactVendas,
+    FactVendas[Quantidade] * RELATED(DimProduto[CustoUnitario])
+)
+
+```
+
+
+* **Lucro Total:**
+```dax
+Lucro Total = [Faturamento Total] - [Custo Total]
+
+```
+
+
+* **Total de Unidades Vendidas:**
+```dax
+Total Unidades = SUM(FactVendas[Quantidade])
+
+```
+
+
+
+---
+
+## 📈 Destaques do Dashboard Executivo
+
+* **Cartões de KPI:** Leitura imediata de Faturamento, Custo e Total de Unidades.
+* **Filtros Interativos (Tile/Botões):** Segmentação temporal por Mês de forma limpa.
+* **Evolução Mensal:** Gráfico de linhas comparando a trajetória de Faturamento vs. Lucro.
+* **Análise por Categoria:** Gráfico de barras horizontais detalhando a margem de lucro por segmento de produtos.
+* **Desempenho por Loja:** Colunas informando o volume faturado em cada ponto de venda / e-commerce.
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+* **Power BI Desktop:** Modelagem de dados, DAX e UI/UX Dashboard Design.
+* **SQL Server 2022:** Armazenamento e estruturação relacional.
+* **Docker / Docker Compose:** Conteinerização do banco de dados no ambiente Linux.
+* **Azure Data Studio:** Gerenciamento de scripts T-SQL e validação das tabelas.
+* **Ubuntu Linux & Windows 11 (VM):** Infraestrutura hospedeira e ambiente de homologação.
+
+---
+
+## 👤 Autor
+
+**Mário Rossatti Junior**
+
+*Desenvolvedor & Analista de Dados / BI*
+
+* GitHub: [@rossatti-dataworker](https://github.com/rossatti-dataworker)
+* Gmail:  [@rossatti.dataworker](rossatti.dataworker@gmail.com)
